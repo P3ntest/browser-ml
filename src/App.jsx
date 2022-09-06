@@ -51,7 +51,7 @@ function App() {
 
       const MIN = 0;
       const MAX = 10;
-      const STEP = 0.001;
+      const STEP = 0.02;
 
       const xs = [];
       const ys = [];
@@ -66,16 +66,16 @@ function App() {
         y: ys.map((el) => el[0]),
       });
 
-      const OUTPUT_DISPLAY_AMOUNT = 10;
+      const OUTPUT_DISPLAY_AMOUNT = 5;
 
       const OUTPUT_DISPLAY_DENSITY = (MAX - MIN) / OUTPUT_DISPLAY_AMOUNT;
 
       const setCurrentTrained = () => {
         setOutputDataset({
-          x: Array(OUTPUT_DISPLAY_AMOUNT + 1)
+          x: Array(OUTPUT_DISPLAY_AMOUNT + 10)
             .fill()
             .map((e, i) => OUTPUT_DISPLAY_DENSITY * i),
-          y: Array(OUTPUT_DISPLAY_AMOUNT + 1)
+          y: Array(OUTPUT_DISPLAY_AMOUNT + 10)
             .fill()
             .map(
               (e, i) =>
@@ -92,9 +92,10 @@ function App() {
             xs: tf.data.array(xs),
             ys: tf.data.array(ys.map((el) => el[0])),
           })
-          .batch(500)
+          .batch(batchSize)
           .shuffle(1000),
         {
+          yieldEvery: "auto",
           epochs: 100,
           callbacks: {
             onEpochEnd: (epochs, logs) => {
